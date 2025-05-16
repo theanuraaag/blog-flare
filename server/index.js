@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import AuthRoute from "./routes/Auth.route.js";
+import TestRoute from "./routes/Test.routes.js";
+
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.use(
 );
 
 app.use('/server/auth', AuthRoute)
+app.use('/server/test', TestRoute)
 
 mongoose
   .connect(process.env.MONGODB_URI, { dbName: "blog-flare" })
@@ -34,7 +37,7 @@ app.listen(PORT, () => {
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "internal server error";
-  req.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     statusCode,
     message,
